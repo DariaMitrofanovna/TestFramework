@@ -1,9 +1,10 @@
-package calculator;
+package calculatortests;
 
-import utils.After;
-import utils.Asserts;
-import utils.Before;
-import utils.Test;
+import annotations.After;
+import calculator.Calculator;
+import framework.Asserts;
+import annotations.Before;
+import annotations.Test;
 
 public class CalculatorTests {
     @Before

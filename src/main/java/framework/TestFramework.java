@@ -1,6 +1,8 @@
-import utils.After;
-import utils.Before;
-import utils.Test;
+package framework;
+
+import annotations.After;
+import annotations.Before;
+import annotations.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
