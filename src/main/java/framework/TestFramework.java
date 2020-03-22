@@ -12,36 +12,51 @@ import java.util.List;
 
 public class TestFramework {
 
-    public static void start(String path) throws Exception {
-        List<Class> classes;
-        classes = new ArrayList<>(new Reflections(path, new SubTypesScanner(false)).getSubTypesOf(Object.class));
+    String path;
+    List<Method> methodsTest;
+    Method methodBefore;
+    Method methodAfter;
+
+    public void start(String path) throws Exception {
+        this.path = path;
+        List<Class> classes = getClassesFromPath();
         for (Class cl : classes) {
             Object object = cl.getConstructor().newInstance();
-            List<Method> methodsTest = getMethods(cl, Test.class);
-            List<Method> methodsBefore = getMethods(cl, Before.class);
-            List<Method> methodsAfter = getMethods(cl, After.class);
+            methodsTest = getMethods(cl, Test.class);
+            methodBefore = getMethod(cl, Before.class);
+            methodAfter = getMethod(cl, After.class);
 
             for (Method method : methodsTest) {
                 System.out.println("Testing: " + method.getName());
-                for (Method m : methodsBefore) {
-                    m.invoke(object);
-                }
+
+                methodBefore.invoke(object);
                 method.invoke(object);
-                for (Method m : methodsAfter) {
-                    m.invoke(object);
-                }
+                methodAfter.invoke(object);
             }
         }
     }
 
-    private static List<Method> getMethods(Class cl, Class annotation) {
-        ArrayList<Method> methods = new ArrayList<>();
+    private List<Class> getClassesFromPath() {
+        return new ArrayList<>(new Reflections(this.path, new SubTypesScanner(false)).getSubTypesOf(Object.class));
+    }
+
+    private List<Method> getMethods(Class cl, Class annotation) {
+        List<Method> methods = new ArrayList<>();
         for (Method method : cl.getMethods()) {
             if (!(method.getAnnotation(annotation) == null)) {
                 methods.add(method);
             }
         }
         return methods;
+    }
+
+    private Method getMethod(Class cl, Class annotation) {
+        for (Method method : cl.getMethods()) {
+            if (!(method.getAnnotation(annotation) == null)) {
+                return method;
+            }
+        }
+        return null;
     }
 }
 

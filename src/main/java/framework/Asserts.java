@@ -7,6 +7,8 @@ public class Asserts {
             System.out.println("test passed");
         } else {
             System.out.println("test failed");
+            System.out.println("expected: "+ true);
+            System.out.println("actual: "+ object.toString());
         }
     }
 
@@ -15,14 +17,19 @@ public class Asserts {
             System.out.println("test passed");
         } else {
             System.out.println("test failed");
+            System.out.println("expected: "+ object1.toString());
+            System.out.println("actual: "+ object2.toString());
+
         }
     }
 
     public static void assertNotNull(Object object) {
-        if (object == null) {
-            System.out.println("test failed");
-        } else {
+        if (object != null) {
             System.out.println("test passed");
+        } else {
+            System.out.println("test failed");
+            System.out.println("expected: not null");
+            System.out.println("actual: null");
         }
     }
 
